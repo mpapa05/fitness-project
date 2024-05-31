@@ -13,16 +13,8 @@ var database;
 
 app.listen(3000, async () => {
     console.log("Server running on port 3000");
-    // MongoClient.connect(CONNECTION_STRING, (error, client) => {
-    //     if(error) {
-    //         console.log("Error connecting to database!");
-    //         throw error;
-    //     }
-    //     database = client.db(DATABASENAME);
-    //     console.log("Connected to `" + DATABASENAME + "`!");
-    // });
     try {
-        const client = await MongoClient.connect(CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true });
+        const client = await MongoClient.connect(CONNECTION_STRING);
         database = client.db(DATABASENAME);
         console.log("Connected to `" + DATABASENAME + "`!");
     } catch (error) {
@@ -33,16 +25,21 @@ app.listen(3000, async () => {
 
 app.get('/fitness', async (request, response) => {
     console.log('get all');
-    // database.collection("fitness").find({}).toArray((error, result) => {
-    //     if(error) {
-    //         return response.status(500).send
-    //     }
-    //     console.log(result);
-    //     response.send(result);
-    // }
-    // );
     try {
         const fitnessCollection = database.collection("fitness");
+        const result = await fitnessCollection.find({}).toArray();
+        console.log(result);
+        response.send(result);
+    } catch (error) {
+        console.error("Error retrieving fitness data:", error);
+        response.status(500).send("Error retrieving fitness data");
+    }
+});
+
+app.get('/exercises', async (request, response) => {
+    console.log('exercises');
+    try {
+        const fitnessCollection = database.collection("exercises");
         const result = await fitnessCollection.find({}).toArray();
         console.log(result);
         response.send(result);

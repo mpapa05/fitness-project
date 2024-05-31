@@ -6,15 +6,11 @@ import { Injectable } from '@angular/core';
 })
 
 export class ExerciseService {
-  readonly APIUrl = "http://localhost:3000/fitness/";
+  readonly APIUrl = "http://localhost:3000/exercises";
   constructor(private http: HttpClient) { }
 
   getExercises() {
-    return this.http.get(this.APIUrl + '/exercises');
-  }
-
-  getTest() {
-    console.log('test');
+    console.log('getExercises');
     const test = this.http.get(this.APIUrl);
     console.log(test);
     return this.http.get(this.APIUrl);
